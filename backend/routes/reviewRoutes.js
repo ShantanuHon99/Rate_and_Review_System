@@ -15,6 +15,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
+// POST review
 router.post('/', upload.single('photo'), reviewController.addReview);
+
+// ✅ GET popular tags
+router.get('/tags', reviewController.getPopularTags);
 
 module.exports = router;

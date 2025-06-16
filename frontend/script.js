@@ -12,12 +12,11 @@ async function loadProducts() {
   productList.innerHTML = '';
 
   for (let product of products) {
-    // Fetch product details and reviews
     const reviewRes = await fetch(`${apiBase}/products/${product.id}`);
     const productData = await reviewRes.json();
     const reviews = productData.reviews;
 
-    // Generate reviews HTML
+    // Reviews 
     let reviewsHTML = '';
     if (reviews.length === 0) {
       reviewsHTML = `<p>No reviews yet.</p>`;
@@ -31,7 +30,7 @@ async function loadProducts() {
       `).join('');
     }
 
-    // Create a unique ID for each review section
+    // Product Card
     const reviewSectionId = `reviews-${product.id}`;
 
         const card = document.createElement('div');
@@ -41,7 +40,7 @@ async function loadProducts() {
       <h3>${product.name}</h3>
       <p><strong>Price:</strong> ₹${product.price}</p>
       <p>${product.description}</p>
-      <p>⭐ ${product.avg_rating || 'No ratings'} (${product.review_count} reviews)</p>
+      <p>⭐ ${parseFloat(product.avg_rating || 0).toFixed(1)} (${product.review_count} reviews)</p>
       <button onclick="openReviewForm(${product.id})">Add Review</button>
       <button onclick="toggleReviews('${reviewSectionId}', this)">View Reviews</button>
       <div id="${reviewSectionId}" class="reviews hidden">
@@ -54,7 +53,7 @@ async function loadProducts() {
   }
 }
 
-// Modal open/close + submit remain same as before
+// Review Form Toggle 
 function openReviewForm(productId) {
   productInput.value = productId;
   reviewModal.classList.remove('hidden');
@@ -79,6 +78,8 @@ reviewForm.addEventListener('submit', async e => {
 
 loadProducts();
 
+
+// Reviwes Toggle
 function toggleReviews(sectionId, button) {
   const section = document.getElementById(sectionId);
   if (section.classList.contains('hidden')) {
@@ -89,3 +90,13 @@ function toggleReviews(sectionId, button) {
     button.textContent = 'View Reviews';
   }
 }
+
+// Load Tags
+async function loadTags() {
+  const res = await fetch(`${apiBase}/reviews/tags`);
+  const data = await res.json();
+  const tagDiv = document.getElementById('popular-tags');
+  tagDiv.innerHTML = `<h4>Popular Tags:</h4> ${data.tags.map(t => `<span class="tag">${t}</span>`).join(' ')}`;
+}
+
+loadTags();

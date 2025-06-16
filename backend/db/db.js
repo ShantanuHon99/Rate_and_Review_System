@@ -14,10 +14,10 @@ const initDB = async () => {
 
     const initScript = fs.readFileSync(path.join(__dirname, 'init.sql'), 'utf8');
     await connection.query(initScript);
-    console.log('✅ Database and tables initialized');
+    console.log(' Database and tables initialized');
     await connection.end();
   } catch (err) {
-    console.error('❌ Error initializing DB:', err);
+    console.error(' Error initializing DB:', err);
   }
 };
 

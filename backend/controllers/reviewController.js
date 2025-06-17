@@ -9,7 +9,6 @@ exports.addReview = async (req, res) => {
   }
 
   try {
-    // Check if user exists, else create
     let [[user]] = await db.query(`SELECT * FROM users WHERE username = ?`, [username]);
     if (!user) {
       const [result] = await db.query(`INSERT INTO users (username) VALUES (?)`, [username]);

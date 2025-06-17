@@ -3,7 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const reviewController = require('../controllers/reviewController');
 
-// File upload config
+// Image Upload
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads/');
@@ -18,7 +18,7 @@ const upload = multer({ storage });
 // POST review
 router.post('/', upload.single('photo'), reviewController.addReview);
 
-// ✅ GET popular tags
+// GET tags
 router.get('/tags', reviewController.getPopularTags);
 
 module.exports = router;
